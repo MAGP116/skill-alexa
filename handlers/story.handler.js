@@ -11,6 +11,7 @@ module.exports = {
     async handle(handlerInput) {
         const responseBuilder = handlerInput.responseBuilder;
         const pr = new PR(handlerInput);
+        const {concept} = handlerInput.requestEnvelope.request.intent.slots;
 
         try {
             //Call the progressive response service
@@ -21,7 +22,7 @@ module.exports = {
             console.log("error : " + err);
         }
         try {
-            let response = await story.createByConcept('oranges');
+            let response = await story.createByConceptSpanish(`${concept}`);
             console.log(`GPT usage:  ${response.usage}`);
 
             return responseBuilder

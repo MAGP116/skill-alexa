@@ -1,4 +1,5 @@
 const Alexa = require('ask-sdk');
+const message = require('../utils/messages');
 /**
  * Generic error handling to capture any syntax or routing errors. If you receive an error
  * stating the request handler chain is not found, you have not implemented a handler for
@@ -9,7 +10,7 @@ module.exports = {
         return true;
     },
     handle(handlerInput, error) {
-        const speakOutput = 'Sorry, I had trouble doing what you asked. Please try again.';
+        const speakOutput = message.error.error;
         console.log(`~~~~ Error handled: ${JSON.stringify(error.name)}`);
         console.log(error.message)
 

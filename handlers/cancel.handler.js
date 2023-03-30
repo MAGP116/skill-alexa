@@ -1,4 +1,5 @@
 const Alexa = require('ask-sdk');
+const message = require('../utils/messages');
 module.exports = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -6,7 +7,7 @@ module.exports = {
                 || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
     },
     handle(handlerInput) {
-        const speakOutput = 'Goodbye!';
+        const speakOutput = message.cancel;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)

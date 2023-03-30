@@ -1,4 +1,5 @@
 const Alexa = require('ask-sdk');
+const messages = require('../utils/messages');
 /* *
  * The intent reflector is used for interaction model testing and debugging.
  * It will simply repeat the intent the user said. You can create custom handlers for your intents 

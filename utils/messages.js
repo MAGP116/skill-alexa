@@ -1,6 +1,6 @@
 module.exports = {
     wait: {
-        wait30s:`Hola, vamos a esperar 30 segundos
+        wait30s: `Hola, vamos a esperar 30 segundos
         <break time="10s"/>
         Ya van 10 segundos
         <break time="10s"/>
@@ -9,8 +9,15 @@ module.exports = {
         Han pasado 30 segundos
         `
     },
-    welcome:{
+    welcome: {
         launch: 'Hola, bienvenido al cuenta cuentos, ¿Cómo puedo ayudarte?'
     },
-    hola:'perfecto, permite escribir el cuento, dame un segundo o dos.'
+    error: {
+        error: 'Lo siento, tuve problemas para realizar lo que me pediste.',
+        notFound: 'Lo siento, no pude entenderte, ¿podrias repetirlo?'
+    },
+    help: `Saludos, puedo ayudarte a crear cuentos, solo necesito que me entrges un concepto.
+    sPor ejemplo, prueba a decir: creame un cuento sobre tortugas.
+    `,
+    cancel: 'Adios, recuerda cuantos cuentos cuento.'
 }
