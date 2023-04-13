@@ -1,11 +1,12 @@
 const Alexa = require('ask-sdk');
-const message = require('../utils/messages');
+const Messages = require('../utils/messages');
 module.exports = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     handle(handlerInput) {
-        const speakOutput = message.welcome.launch;
+        const messages = Messages(handlerInput.requestEnvelope.request.locale);
+        const speakOutput = messages.welcome.launch;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)

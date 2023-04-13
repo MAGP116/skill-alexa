@@ -1,6 +1,6 @@
 const Alexa = require('ask-sdk');
 const PR = require('../controllers/progressiveResponse.controller');
-const messages = require('../utils/messages');
+const Messages = require('../utils/messages');
 const story = require('../controllers/story.controller');
 
 module.exports = {
@@ -10,6 +10,7 @@ module.exports = {
     },
     async handle(handlerInput) {
         const responseBuilder = handlerInput.responseBuilder;
+        const messages = Messages(handlerInput.requestEnvelope.request.locale);
         const pr = new PR(handlerInput);
         const {concept} = handlerInput.requestEnvelope.request.intent.slots;
 
@@ -22,7 +23,7 @@ module.exports = {
             console.log("error : " + err);
         }
         try {
-            let response = await story.createByConceptSpanish(`${concept}`);
+            let response = await story.createByConceptSpanish(`${concept.value}`);
             console.log(`GPT usage:  ${response.usage}`);
 
             return responseBuilder
