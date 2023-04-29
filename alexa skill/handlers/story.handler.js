@@ -2,6 +2,7 @@ const Alexa = require('ask-sdk');
 const PR = require('../controllers/progressiveResponse.controller');
 const Messages = require('../utils/messages');
 const story = require('../controllers/story.controller');
+const thing = require("../controllers/thing.controller");
 
 module.exports = {
     canHandle(handlerInput) {
@@ -16,18 +17,22 @@ module.exports = {
 
         try {
             //Call the progressive response service
-            await pr.SendSpeech(messages.wait.wait30s)
+            await pr.SendSpeech(messages.wait.wait10s)
 
         } catch (err) {
             // if it failed we can continue, just the user will wait longer for the first response
             console.log("error : " + err);
         }
         try {
-            let response = await story.createByConceptSpanish(`${concept.value}`);
+            let response = await story.createByConcept(`${concept.value}`, messages.language, messages.prompt);
             console.log(`GPT usage:  ${response.usage}`);
 
+            //Send actions to arduino
+            thing({"actions":response.actions, "type": "actions"});
+
+            //Send response to alexa
             return responseBuilder
-                .speak(response.content)
+                .speak(response.speakText)
                 .getResponse();
 
         } catch (err) {
@@ -38,7 +43,3 @@ module.exports = {
         }
     }
 };
-
-function sleep(milliseconds) {
-    return new Promise(resolve => setTimeout(resolve(), milliseconds));
-}
