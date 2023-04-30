@@ -28,7 +28,8 @@ module.exports = {
             console.log(`GPT usage:  ${response.usage}`);
 
             //Send actions to arduino
-            thing({"actions":response.actions, "type": "actions"});
+            //TODO GET USER FROM LOGIN
+            thing({"actions":response.actions, "type": "actions", "user":0});
 
             //Send response to alexa
             return responseBuilder

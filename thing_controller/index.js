@@ -1,5 +1,5 @@
 const Thing = require("./controllers/thing.controller");
-const Database = require("./controllers/database.controller");
+const db = require("./controllers/database.controller");
 const { setTimeout } = require("timers/promises");
 
 let components = {
@@ -9,14 +9,9 @@ let components = {
 }
 
 let types = {
-    actions: {
-        "method": processActions,
-        "key": "actions"
-    },
-    test: {
-        "method": test,
-        "key": "actions"
-    }
+    actions: processActions,
+    test: test
+
 }
 
 exports.handler = async (event) => {
@@ -29,7 +24,7 @@ exports.handler = async (event) => {
         };
     }
 
-    await action["method"](event[action["key"]]);
+    await action(event);
 
     const response = {
         statusCode: 200,
@@ -38,15 +33,17 @@ exports.handler = async (event) => {
     return response;
 };
 
-async function processActions(actions) {
+async function processActions(event) {
+    let {actions, user} = event;
     console.log(actions);
 
-    //TODO, chnage this to get the user from dynamodb
-    const thing = new Thing(process.env.ARDUINO_ID, process.env.ARDUINO_SECRET);
-    //TODO: CHANGE THIS TO GET IT FROM DYNAMODB, also ids
-    const NAME = "Untitled"
+    const keys = (await db.getThings(user))[0];
 
-    const properties = await thing.findProperties(NAME, [components.colored_light, components.switch]);
+    const device = (await db.getDevices(keys.thing_id))[0];
+
+    const thing = new Thing(keys.id, keys.secret);
+
+    const properties = await thing.findProperties(device.name, [components.colored_light, components.switch]);
     for (let action of actions || []) {
         if (action.component === components.sleep) {
             await sleep(action.duration);
@@ -61,9 +58,19 @@ async function processActions(actions) {
     }
 }
 
-async function test(actions) {
-    let db = Database();
-    console.log(await db.listTables());
+async function test(event) {
+    console.log("running test");
+
+    const keys = (await db.getThings("0"))[0];
+    const device = (await db.getDevices(keys.thing_id))[0];
+    console.log(JSON.stringify(device, null, 4));
+
+    const thing = new Thing(keys.id, keys.secret);
+    const properties = await thing.findProperties(device.name, [components.colored_light, components.switch]);
+    console.log(JSON.stringify(properties, null, 4));
+
+    const tales = await db.getTales(0);
+    console.log(JSON.stringify(tales,null,4));
 }
 
 async function sleep(seconds) {

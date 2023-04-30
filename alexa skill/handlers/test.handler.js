@@ -2,7 +2,6 @@ const Alexa = require('ask-sdk');
 const thing = require('../controllers/thing.controller');
 const Messages = require('../utils/messages');
 const PR = require('../controllers/progressiveResponse.controller');
-const thing = require("../controllers/thing.controller");
 const story = require('../controllers/story.controller');
 
 module.exports = {
@@ -18,15 +17,13 @@ module.exports = {
         try {
             //Call the progressive response service
             await pr.SendSpeech(messages.wait.wait10s)
-            //Test thing call
-            thing({a:1,b:2});
 
         } catch (err) {
             // if it failed we can continue, just the user will wait longer for the first response
             console.log("error : " + err);
         }
         let response = story.processStory(messages.test.tale);
-        thing({"actions":response.actions, "type": "actions"});
+        thing({ "actions": response.actions, "type": "test", "user": 0 });
         await sleep(10000);
 
         return handlerInput.responseBuilder
