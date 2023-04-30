@@ -1,41 +1,38 @@
 const Alexa = require('ask-sdk');
+const thing = require('../controllers/thing.controller');
+const Messages = require('../utils/messages');
 const PR = require('../controllers/progressiveResponse.controller');
-const messages = require('../utils/messages');
 const story = require('../controllers/story.controller');
 
 module.exports = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'StoryIntent';
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'TestIntent';
     },
     async handle(handlerInput) {
-        const responseBuilder = handlerInput.responseBuilder;
+        const messages = Messages(handlerInput.requestEnvelope.request.locale);
+        const speakOutput = messages.test.answer;
         const pr = new PR(handlerInput);
 
         try {
             //Call the progressive response service
-            await pr.SendSpeech(messages.wait.wait30s)
+            await pr.SendSpeech(messages.wait.wait10s)
 
         } catch (err) {
             // if it failed we can continue, just the user will wait longer for the first response
             console.log("error : " + err);
         }
-        try {
-            let response = await story.createByConcept('oranges');
-            console.log(`GPT usage:  ${response.usage}`);
+        let response = story.processStory(messages.test.tale);
+        thing({ "actions": response.actions, "type": "test", "user": 0 });
+        await sleep(10000);
 
-            return responseBuilder
-                .speak(response.content)
-                .getResponse();
-
-        } catch (err) {
-            console.log(`Error processing events request: ${err}`);
-            return responseBuilder
-                .speak('error')
-                .getResponse();
-        }
+        return handlerInput.responseBuilder
+            .speak(response.speakText)
+            //.reprompt(speakOutput)
+            .getResponse();
     }
 };
+
 
 function sleep(milliseconds) {
     return new Promise(resolve => setTimeout(resolve(), milliseconds));

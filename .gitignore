@@ -107,4 +107,5 @@ src/test.http
 firebase_credentials.json
 src/public/
 test.http
-controllers.zip
+*.zip
+test.js

@@ -1,11 +1,13 @@
 const Alexa = require('ask-sdk');
+const Messages = require('../utils/messages');
 module.exports = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
     },
     handle(handlerInput) {
-        const speakOutput = 'You can say hello to me! How can I help?';
+        const messages = Messages(handlerInput.requestEnvelope.request.locale);
+        const speakOutput = messages.help;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
