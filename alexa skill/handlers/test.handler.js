@@ -3,6 +3,8 @@ const thing = require('../controllers/thing.controller');
 const Messages = require('../utils/messages');
 const PR = require('../controllers/progressiveResponse.controller');
 const story = require('../controllers/story.controller');
+const { setTimeout } = require("timers/promises");
+const db = require("../controllers/database.controller");
 
 module.exports = {
     canHandle(handlerInput) {
@@ -23,8 +25,13 @@ module.exports = {
             console.log("error : " + err);
         }
         let response = story.processStory(messages.test.tale);
-        thing({ "actions": response.actions, "type": "test", "user": 0 });
-        await sleep(10000);
+        //thing({ "actions": response.actions, "type": "test", "user": 0 });
+        try{
+            console.log(await db.getMaxIdTale());
+        }catch(error){
+            console.log(`Error: ${error}`)
+        }
+        await setTimeout(10000);
 
         return handlerInput.responseBuilder
             .speak(response.speakText)
@@ -32,8 +39,3 @@ module.exports = {
             .getResponse();
     }
 };
-
-
-function sleep(milliseconds) {
-    return new Promise(resolve => setTimeout(resolve(), milliseconds));
-}

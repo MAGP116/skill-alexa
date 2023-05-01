@@ -13,7 +13,9 @@ class Story {
         })
 
         return completion.status == 200 ?
-            this.#join({ "usage": JSON.stringify(completion.data["usage"]) }, this.processStory(completion.data["choices"][0]["message"]["content"])) :
+            this.#join(
+                { "usage": JSON.stringify(completion.data["usage"]), "title": concept },
+                this.processStory(completion.data["choices"][0]["message"]["content"])) :
             {}
     }
 

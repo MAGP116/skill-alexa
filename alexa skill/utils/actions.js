@@ -10,7 +10,7 @@ let actions = {
     turn_on_switch: { component: components.switch, value: true },
     turn_off_switch: { component: components.switch, value: false },
 
-    wind: { component: components.switch, value: true, duration: 3.0 },
+    wind: { component: components.switch, value: true, duration: 7.0 },
 
     //Change colored light
     turn_on_light: { component: components.colored_light, value: colors.default },
