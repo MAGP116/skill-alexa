@@ -7,6 +7,9 @@ module.exports = {
     handle(handlerInput) {
         const messages = Messages(handlerInput.requestEnvelope.request.locale);
         const speakOutput = messages.welcome.launch;
+        //TODO: GET USER ID FROM DB AND SAVE IT IN ATTRIBUTES
+        let attributes = {"user":0};
+        handlerInput.attributesManager.setSessionAttributes(attributes);
 
         return handlerInput.responseBuilder
             .speak(speakOutput)

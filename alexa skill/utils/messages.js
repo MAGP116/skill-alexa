@@ -4,6 +4,10 @@ const messages = {
     'es-MX': {
         language: "spanish",
         chatgptpromt: "cuentame una cuento sobre",
+        list: {
+            countStories: (count, names) =>`${count > 1 ? `Encontre ${count} cuentos guardados, los nombres son: ${names}` : `Encontre un cuento guardado, el nombre es: ${names}`}, ¿Cuál quieres que te cuente?`,
+            noStories: "No cuenta con ninguna historia guardada"
+        },
         wait: {
             wait30s: `Hola, vamos a esperar 30 segundos
             <break time="10s"/>
@@ -36,7 +40,13 @@ const messages = {
         },
         error: {
             error: 'Lo siento, tuve problemas para realizar lo que me pediste.',
-            notFound: 'Lo siento, no pude entenderte, ¿podrias repetirlo?'
+            notFound: 'Lo siento, no pude entenderte, ¿podrias repetirlo?',
+            noLogged: "Lo siento, no puedo ayudarlo en eso si no inicias sesion",
+            notFoundList: 'Lo siento, no fui capas de encontrar ese cuento, ¿Podrías repetirlo?'
+        },
+        question:{
+            answerNo: "Entendido, no lo voy a hacer",
+            answerYes: "Perfecto, dame un momento para hacerlo"
         },
         help: `Saludos, puedo ayudarte a crear cuentos, solo necesito que me entregues un concepto.
         Por ejemplo, prueba a decir: créame un cuento sobre tortugas.`,
@@ -45,6 +55,9 @@ const messages = {
     'en-US': {
         language: "english",
         chatgptpromt: "tell me a tale about",
+        list: {
+            countStories: (count, names) => `I found ${count} saved tales, their titles are: ${names}`
+        },
         wait: {
             wait30s: `Hi, lets wait 30 seconds
             <break time="10s"/>
@@ -63,7 +76,8 @@ const messages = {
         },
         error: {
             error: 'I\'m sorry, I had problems doing what your asked me',
-            notFound: 'Sorry, I didn\' get it, can you repeat it? please'
+            notFound: 'Sorry, I didn\' get it, can you repeat it? please',
+            noLogged: "Sorry, I can't help you with that if you are not logged in."
         },
         help: `Welcome, I can help you to create a new tale, just give me a topic.
         For example, try saying: create a story about turtles.`,

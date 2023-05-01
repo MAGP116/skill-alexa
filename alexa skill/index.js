@@ -9,6 +9,10 @@ const FallbackIntentHandler = require('./handlers/fallback.handler');
 const SessionEndedRequestHandler = require('./handlers/sessionEnded.handler');
 const IntentReflectorHandler = require('./handlers/intentReflector.handler');
 const ErrorHandler = require('./handlers/error.handler');
+const ListStoryHandler = require('./handlers/list.story.handler');
+const SelectHandler = require('./handlers/select.handler');
+const YesHandler = require('./handlers/yes.handler');
+const NoHandler = require('./handlers/no.handler');
 
 /**
  * This handler acts as the entry point for your skill, routing all request and response
@@ -19,7 +23,11 @@ exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
         StoryIntentHandler,
+        ListStoryHandler,
+        SelectHandler,
         TestIntentHandler,
+        YesHandler,
+        NoHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
         FallbackIntentHandler,
